@@ -160,20 +160,21 @@ Không push trực tiếp lên `main`.
 Tạo branch riêng cho từng task:
 
 ```bash
-git checkout -b feature/collector
+git checkout -b feature1/web-page-collector
 ```
 
 Commit code:
 
 ```bash
 git add .
-git commit -m "feat: add web collector module"
+git commit -m "feat1: requests to retrieve HTML content from the target
+URL"
 ```
 
 Push branch:
 
 ```bash
-git push -u origin feature/collector
+git push -u origin feature1/web-page-collector
 ```
 
 Sau đó tạo Pull Request trên GitHub để merge vào `main`.
@@ -183,13 +184,17 @@ Sau đó tạo Pull Request trên GitHub để merge vào `main`.
 ## 7. Quy ước đặt tên branch
 
 ```txt
-feature/collector
-feature/parser
-feature/extractor
-feature/analyzer
-feature/visualizer
-fix/parser-bug
-docs/setup-guide
+feature1/web-page-collector
+feature2/html-parser
+feature3/section-extractor
+feature4/link-extractor
+feature5/code-example-extractor
+feature6/documentation-analytics
+feature7/data-visualization
+feature8/final-report-generator
+feature-advanced/local-analytics-app
+fix/bug-name
+docs/doc-name
 ```
 
 ---
