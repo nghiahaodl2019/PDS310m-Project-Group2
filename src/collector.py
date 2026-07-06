@@ -1,10 +1,14 @@
 import os
 import argparse
+from pathlib import Path
 import requests
+
+# Resolve paths relative to the project root, not the current shell directory.
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 # Default configuration
 DEFAULT_URL = "https://www.crummy.com/software/BeautifulSoup/bs4/doc/"
-DEFAULT_OUTPUT_PATH = os.path.join("data", "raw", "beautifulsoup_doc.html")
+DEFAULT_OUTPUT_PATH = PROJECT_ROOT / "data" / "raw" / "beautifulsoup_doc.html"
 USER_AGENT = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -35,10 +39,11 @@ def collect_webpage(url: str = DEFAULT_URL, output_path: str = DEFAULT_OUTPUT_PA
         html_content = response.text
         
         # Ensure the destination directory exists
-        output_dir = os.path.dirname(os.path.abspath(output_path))
-        if not os.path.exists(output_dir):
+        output_path = Path(output_path)
+        output_dir = output_path.parent
+        if not output_dir.exists():
             print(f"Creating directory: {output_dir}")
-            os.makedirs(output_dir, exist_ok=True)
+            output_dir.mkdir(parents=True, exist_ok=True)
             
         # Save raw HTML into the destination file
         with open(output_path, "w", encoding="utf-8") as f:
