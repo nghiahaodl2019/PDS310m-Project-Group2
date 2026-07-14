@@ -90,6 +90,12 @@ def _build_styles():
         name="BodyJustified", parent=styles["Normal"], fontSize=10.5,
         leading=15, alignment=4,  # 4 = justify
     ))
+    styles.add(ParagraphStyle(
+        name="TableText", parent=styles["Normal"], fontSize=9, leading=12
+    ))
+    styles.add(ParagraphStyle(
+        name="TableHeader", parent=styles["Normal"], fontSize=9, leading=12, textColor=colors.white, fontName="Helvetica-Bold"
+    ))
     return styles
 
 
@@ -130,13 +136,18 @@ def _section_dataset_overview(styles, row_counts: Dict) -> list:
         ),
         Spacer(1, 0.3 * cm),
     ]
-    table_data = [
+    raw_table_data = [
         ["Dataset", "Rows", "Description"],
         ["sections.csv", str(row_counts["sections"]), "Headings (h1/h2/h3) with text, word count, code block count, link count"],
         ["links.csv", str(row_counts["links"]), "All hyperlinks with text, href, type, and originating section"],
         ["code_examples.csv", str(row_counts["code_examples"]), "Python code blocks with line count and BS4-method usage flags"],
     ]
-    t = Table(table_data, colWidths=[3.5 * cm, 1.8 * cm, 10.5 * cm])
+    table_data = []
+    table_data.append([Paragraph(cell, styles["TableHeader"]) for cell in raw_table_data[0]])
+    for row in raw_table_data[1:]:
+        table_data.append([Paragraph(cell, styles["TableText"]) for cell in row])
+
+    t = Table(table_data, colWidths=[3.5 * cm, 2.0 * cm, 10.5 * cm], hAlign="CENTER")
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2C3E50")),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
@@ -187,7 +198,7 @@ def _section_extracted_data_summary(styles, results: Dict) -> list:
 
 
 def _section_analysis_results(styles, results: Dict) -> list:
-    rows = [
+    raw_rows = [
         ["#", "Question", "Answer"],
         ["Q1", "How many sections are in the documentation?",
          str(results["q1_total_sections"])],
@@ -214,13 +225,22 @@ def _section_analysis_results(styles, results: Dict) -> list:
         ["Q10*", "% of code examples using a BS4 search method",
          f'{results["q10_bs4_method_usage_ratio"]["percentage"]}%'],
     ]
-    t = Table(rows, colWidths=[1.3 * cm, 7 * cm, 7.5 * cm], repeatRows=1)
+    rows = []
+    rows.append([Paragraph(cell, styles["TableHeader"]) for cell in raw_rows[0]])
+    for r in raw_rows[1:]:
+        rows.append([Paragraph(cell, styles["TableText"]) for cell in r])
+
+    t = Table(rows, colWidths=[1.2 * cm, 7.3 * cm, 7.5 * cm], repeatRows=1, hAlign="CENTER")
     t.setStyle(TableStyle([
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2C3E50")),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
         ("FONTSIZE", (0, 0), (-1, -1), 8.5),
         ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
         ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("TOPPADDING", (0, 0), (-1, -1), 6),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+        ("LEFTPADDING", (0, 0), (-1, -1), 6),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 6),
         ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#F4F6F7")]),
     ]))
     story = [

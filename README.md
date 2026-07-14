@@ -1,300 +1,173 @@
 # BeautifulSoup Documentation Analytics System
 
-Dự án thu thập, phân tích dữ liệu tài liệu chính thức của BeautifulSoup nhằm phân tích cấu trúc tài liệu, liên kết và ví dụ mã nguồn Python.
-
-# WARNING: NHỚ KÍCH HOẠT VIRTUAL ENVIRONMENT (.venv) TRƯỚC KHI CHẠY CODE NHA AE !!!!!!!!!!!!!!!!!
-
-### Cách xài github
-https://www.youtube.com/watch?v=wFKu81ZMEcg
-
-## 0. Checklist trước khi code (SET UP XONG ĐỌC CŨNG ĐC)
-
-Trước khi bắt đầu làm task mới:
-
-```bash
-git pull origin main
-git checkout -b feature/task-name
-```
-Pull project để update code, checkout để tạo branch mới, không code thẳng vào main nha ae
-
-Trước khi push:
-
-```bash
-python src/main.py
-git status
-```
-
-## 1. Công nghệ sử dụng
-
-- Python (BeautifulSoup4, Pandas, NumPy, Requests)
-- Jupyter Notebook
-
-### Công cụ cần cài
-- Python 3.10 trở lên
-- Visual Studio Code
-- Git
+Hệ thống tự động thu thập, trích xuất cấu trúc văn bản, phân loại liên kết và phân tích ví dụ mã nguồn từ trang tài liệu chính thức của BeautifulSoup.
 
 ---
 
-## 2. Các luồng chính của hệ thống
+## 1. Hướng dẫn cài đặt nhanh (Quick Setup)
 
-### 2.1 Web Page Collector
-Thu thập nội dung HTML từ URL chính thức của BeautifulSoup và lưu vào `data/raw/beautifulsoup_doc.html`.
+* **Bước 1: Clone dự án và truy cập thư mục**
+  ```bash
+  git clone https://github.com/nghiahaodl2019/PDS310m_Project_Group2.git
+  cd PDS301m_Project_Group2
+  ```
 
-### 2.2 HTML Parser & Section Extractor
-Sử dụng BeautifulSoup để phân tích cú pháp HTML và trích xuất danh sách các phần (sections) của tài liệu, lưu vào `data/processed/sections.csv`.
+* **Bước 2: Tạo và kích hoạt môi trường ảo**
+  * *Trên Windows (PowerShell):*
+    ```bash
+    python -m venv .venv
+    .venv\Scripts\Activate.ps1
+    ```
+  * *Trên macOS/Linux:*
+    ```bash
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
 
-### 2.3 Link Extractor & Classifier
-Trích xuất tất cả các siêu liên kết và phân loại chúng thành các nhóm (`internal_anchor`, `external_link`, `documentation_link`, `image_link`, `empty_or_invalid`), lưu vào `data/processed/links.csv`.
+* **Bước 3: Cài đặt thư viện dependencies**
+  ```bash
+  pip install -r requirements.txt
+  ```
 
-### 2.4 Code Example Extractor
-Trích xuất các đoạn code ví dụ Python trong tài liệu và kiểm tra sự xuất hiện của các từ khóa quan trọng (`find_all()`, `find()`, v.v.), lưu vào `data/processed/code_examples.csv`.
-
-### 2.5 Documentation Analytics
-Sử dụng Pandas/NumPy để thực hiện 8+ câu hỏi phân tích dữ liệu, kết quả lưu vào `output/analysis_results.json` và `output/summary_tables.xlsx`.
-
----
-
-## 3. Cấu trúc thư mục đề xuất
-
-```txt
-PDS310m-Project-Group2/
-  data/
-    raw/
-      beautifulsoup_doc.html        # Raw HTML downloaded from the web
-    processed/
-      sections.csv                  # Extracted sections metadata
-      links.csv                     # Extracted hyperlinks
-      code_examples.csv             # Extracted Python code examples
-  notebooks/
-    analysis.ipynb                  # Jupyter Notebook for exploratory analytics
-  output/
-    analysis_results.json           # JSON analytics results
-    summary_tables.xlsx             # Excel summary tables
-  src/
-    collector.py                    # Feature 1: Downloads HTML
-    parser.py                       # Feature 2: Parses HTML using BeautifulSoup
-    extractor.py                    # Features 3, 4, 5: Extracts CSV tables
-    analyzer.py                     # Feature 6: Executes analytics
-    main.py                         # Orchestrates the pipeline
-  README.md
-  requirements.txt
-```
-
-Lưu ý: nếu project thực tế đang đặt tên thư mục khác, thành viên trong nhóm cần sửa lại lệnh `cd` cho đúng.
+* **Bước 4: Chạy toàn bộ hệ thống (Pipeline)**
+  ```bash
+  python src/main.py
+  ```
 
 ---
 
-## 4. Cách clone project
+## 2. Luồng hoạt động tổng quan (Operational Pipeline Flow)
 
-```bash
-git clone <repo-url>
-cd PDS310m-Project-Group2
-```
-
-Ví dụ:
-
-```bash
-git clone https://github.com/<owner>/PDS310m-Project-Group2.git
-cd PDS310m-Project-Group2
-```
+* **Bước 1: Thu thập (Collection):** Tải mã nguồn HTML thô từ trang chủ BeautifulSoup và lưu trữ cục bộ.
+* **Bước 2: Phân tích cú pháp (Parsing):** Dựng cây cấu trúc tài liệu DOM từ file HTML đã tải.
+* **Bước 3: Trích xuất (Extraction):** Bóc tách thông tin thành 3 bảng dữ liệu có cấu trúc: Phân mục (`sections.csv`), Liên kết (`links.csv`), và Ví dụ mã nguồn (`code_examples.csv`).
+* **Bước 4: Thống kê & Phân tích (Analytics):** Đọc các file CSV vào Pandas DataFrame để thực hiện tính toán số liệu và trả lời 10 câu hỏi nghiên cứu.
+* **Bước 5: Trực quan hóa (Visualization):** Vẽ và xuất 4 biểu đồ phân tích thống kê dưới dạng hình ảnh.
+* **Bước 6: Xuất báo cáo (Reporting):** Tạo báo cáo phân tích tổng hợp định dạng PDF và chạy tài liệu tương tác trên Jupyter Notebook.
 
 ---
 
-## 5. Cấu hình chạy dự án
+## 3. Quản lý thông tin & Vai trò công cụ (Information Management & Tooling)
 
-**AE NHỚ CÀI PYTHON 3.10+ NHA NHA NHA !!!!!**
-Link: https://www.python.org/downloads/
+### 3.1. Phân biệt luồng quản lý dữ liệu giữa Python và Jupyter
+* **Mã nguồn Python (`src/*.py`):**
+  * Quản lý thông tin theo cơ chế **"Tách biệt qua tệp tin" (File-based Stateless)**.
+  * Mỗi bước trong luồng xử lý ghi đầu ra xuống đĩa cứng (như file `.html`, `.csv`, `.json`). Bước tiếp theo sẽ đọc file này lên để xử lý tiếp.
+  * Giúp hệ thống hoạt động độc lập, dễ bảo trì, dễ viết kiểm thử tự động và có thể tích hợp chạy định kỳ không cần sự can thiệp của con người.
+* **Jupyter Notebook (`notebooks/*.ipynb`):**
+  * Quản lý thông tin theo cơ chế **"Trạng thái trong bộ nhớ" (Stateful In-Memory)**.
+  * Toàn bộ biến số, nội dung HTML thô và các bảng dữ liệu (DataFrames) được lưu giữ liên tục trong bộ nhớ RAM trong suốt phiên làm việc.
+  * Cho phép người lập trình chạy thử từng ô code nhỏ để kiểm tra kết quả ngay lập tức, rất phù hợp cho giai đoạn nghiên cứu ban đầu (EDA) và viết thuyết minh báo cáo.
 
-Đi vào thư mục root của dự án:
+### 3.2. Vai trò chuyên biệt của Pandas và NumPy
+* **Thư viện Pandas:**
+  * Đóng vai trò là **"Quản lý bảng dữ liệu"**.
+  * Chuyên dùng để đọc các file CSV trung gian, quản lý dữ liệu dưới dạng bảng hàng/cột (DataFrame), thực hiện lọc dữ liệu, nối bảng và gom nhóm thống kê (`groupby`).
+* **Thư viện NumPy:**
+  * Đóng vai trò là **"Công cụ tính toán số học"** làm nền tảng bên dưới Pandas.
+  * Dùng để xử lý các mảng số liệu hiệu năng cao, đại diện các giá trị trống (`np.nan`) và thực hiện các biểu thức điều kiện vector hóa nhanh chóng (như gắn nhãn hoặc tính toán phân phối tần suất từ khóa).
 
-```bash
-cd PDS310m-Project-Group2
-```
-
-Tạo và kích hoạt Virtual Environment:
-
-```bash
-# Tạo môi trường ảo
-python -m venv .venv
-
-# Kích hoạt trên Windows PowerShell:
-.venv\Scripts\Activate.ps1
-
-# Kích hoạt trên Windows CMD:
-.venv\Scripts\activate.bat
-
-# Kích hoạt trên macOS/Linux:
-source .venv/bin/activate
-```
-
-Cài đặt các thư viện cần thiết (dependencies):
-
-```bash
-pip install -r requirements.txt
-```
-
-Chạy toàn bộ pipeline thu thập và phân tích dữ liệu:
-
-```bash
-python src/main.py
-```
-
-Chạy Jupyter Notebook để kiểm tra hoặc viết báo cáo:
-
-```bash
-jupyter notebook notebooks/analysis.ipynb
-```
+### 3.3. Các điểm code mấu chốt trong quản lý thông tin
+* **Quản lý đường dẫn gốc tuyệt đối (`PROJECT_ROOT`):**
+  * Code sử dụng thư viện `pathlib.Path` để thiết lập đường dẫn gốc tuyệt đối của dự án:
+    ```python
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    ```
+  * Điểm code này đảm bảo rằng dù người dùng đứng ở bất kỳ thư mục nào để chạy lệnh (như đứng ở thư mục gốc, thư mục `src/`, hay chạy từ bên trong Jupyter Notebook), các file dữ liệu vẫn luôn được đọc và ghi chính xác vào các thư mục `data/` và `output/` của dự án mà không bị lỗi `FileNotFoundError`.
+* **Tệp trao đổi dữ liệu phân tích (`analysis_results.json`):**
+  * Toàn bộ kết quả thống kê của Feature 6 được đóng gói vào một tệp JSON chung. 
+  * File JSON này đóng vai trò là "cầu nối thông tin", giúp module vẽ biểu đồ (Feature 7) và module xuất báo cáo PDF (Feature 8) có thể tái sử dụng ngay lập tức mà không cần phải thực hiện lại các phép tính toán phức tạp trên các bảng dữ liệu gốc.
 
 ---
 
-## 6. Quy trình làm việc với Git
+## 4. Đặc tả chi tiết giải pháp cho từng Feature (Technical Specifications)
 
-Không push trực tiếp lên `main`.
+* **Feature 1: Web Page Collector (Thu thập HTML thô)**
+  * *Mục tiêu:* Tải toàn bộ nội dung trang web chính thức của BeautifulSoup về máy.
+  * *Giải pháp:* Sử dụng thư viện `requests.get()` với tham số `timeout=20` để chống treo luồng khi mạng lỗi. Gửi kèm header `User-Agent` giả lập trình duyệt Chrome để tránh bị máy chủ web chặn truy cập (lỗi HTTP 403). Ghi nội dung nhận được bằng bộ mã hóa `utf-8` để bảo toàn các ký tự đa ngôn ngữ.
 
-Tạo branch riêng cho từng task:
+* **Feature 2: HTML Parser (Phân tích cú pháp)**
+  * *Mục tiêu:* Phân tích mã nguồn HTML thô để sẵn sàng bóc tách.
+  * *Giải pháp:* Sử dụng thư viện `BeautifulSoup` kết hợp với trình phân tích cú pháp `lxml` giúp tối ưu hóa tốc độ xử lý và bóc tách các thẻ HTML nhanh hơn nhiều so với trình phân tích mặc định.
 
-```bash
-git checkout -b feature1/web-page-collector
-```
+* **Feature 3: Section Extractor (Thuật toán duyệt phần tử kế cận)**
+  * *Mục tiêu:* Tách tài liệu thành các phân mục rõ ràng dựa trên tiêu đề.
+  * *Giải pháp:* Tìm kiếm tất cả các thẻ tiêu đề (`h1`, `h2`, `h3`). Với mỗi tiêu đề, code sử dụng thuộc tính `next_elements` để duyệt qua các thẻ kế tiếp trong văn bản. Quá trình duyệt sẽ liên tục đếm số thẻ `<pre>` (khối code), thẻ `<a>` (liên kết) và tích lũy chữ thô. Quá trình này sẽ dừng lại ngay khi chạm tới một thẻ tiêu đề khác có cấp độ tương đương hoặc cao hơn. Lưu kết quả vào `data/processed/sections.csv`.
 
-Commit code:
+* **Feature 4: Link Extractor & Classifier (Thuật toán phân loại liên kết)**
+  * *Mục tiêu:* Thu thập toàn bộ thẻ `<a>` và phân loại.
+  * *Giải pháp:* Tìm tất cả thẻ `<a>` bằng `soup.find_all('a')`. Dùng hàm `find_previous()` để tìm ngược về tiêu đề gần nhất trước nó nhằm xác định liên kết thuộc phân mục nào. Phân loại liên kết dựa trên các quy tắc:
+    * `internal_anchor`: Thuộc tính `href` bắt đầu bằng ký tự `#`.
+    * `image_link`: `href` kết thúc bằng các đuôi định dạng ảnh (`.png`, `.jpg`, `.gif`...).
+    * `documentation_link`: `href` chứa từ khóa `bs4/doc` hoặc là đường dẫn tương đối dẫn tới các trang hướng dẫn khác.
+    * `external_link`: `href` chứa tên miền bên ngoài (bắt đầu bằng `http` hoặc `https` không thuộc domain chính).
+    * `empty_or_invalid`: `href` bị thiếu, trống hoặc chứa mã script `javascript:`.
+    * Lưu kết quả vào `data/processed/links.csv`.
 
-```bash
-git add .
-git commit -m "feat1: requests to retrieve HTML content from the target
-URL"
-```
+* **Feature 5: Code Example Extractor (Bóc tách mã ví dụ)**
+  * *Mục tiêu:* Trích xuất các đoạn code Python minh họa.
+  * *Giải pháp:* Tìm các thẻ `<pre>` chứa mã nguồn. Số lượng dòng code được đếm bằng cách tách chuỗi theo ký tự xuống dòng (`\n`). Chuyển toàn bộ đoạn mã về chữ thường (`.lower()`) rồi áp dụng toán tử `in` để kiểm tra nhanh sự xuất hiện của các từ khóa đặc biệt (`find_all`, `find`, `select`, `get_text`, `requests`) giúp tăng tốc độ xử lý chuỗi. Lưu kết quả vào `data/processed/code_examples.csv`.
 
-Push branch:
+* **Feature 6: Documentation Analytics (Phân tích Pandas/NumPy)**
+  * *Mục tiêu:* Trả lời 8 câu hỏi bắt buộc và 2 câu hỏi mở rộng.
+  * *Giải pháp:* Đọc 3 file CSV đã trích xuất vào các Pandas DataFrame. Áp dụng các hàm tính toán vector hóa của Pandas và NumPy như `.groupby()`, `.idxmax()`, `.value_counts()` để xử lý tính toán số liệu thống kê một cách tối ưu mà không sử dụng các vòng lặp `for` thủ công chậm chạp.
 
-```bash
-git push -u origin feature1/web-page-collector
-```
+* **Feature 7: Data Visualization (Trực quan hóa)**
+  * *Mục tiêu:* Vẽ 4 biểu đồ phân tích thống kê.
+  * *Giải pháp:* Sử dụng thư viện `matplotlib.pyplot` vẽ biểu đồ cột nằm ngang cho số từ và số ví dụ code, vẽ biểu đồ phân phối tần suất (Histogram) cho số dòng code. Riêng biểu đồ tròn (Pie chart) của liên kết: ẩn các nhãn trực tiếp trên hình tròn để tránh chồng chữ lên nhau, tạo một bảng chú thích (Legend) nằm bên phải hình tròn và thiết lập chỉ hiển thị phần trăm (%) trực tiếp nếu tỉ lệ lớn hơn hoặc bằng 2%.
 
-Sau đó tạo Pull Request trên GitHub để merge vào `main`.
-
----
-
-## 7. Quy ước đặt tên branch
-
-```txt
-feature1/web-page-collector
-feature2/html-parser
-feature3/section-extractor
-feature4/link-extractor
-feature5/code-example-extractor
-feature6/documentation-analytics
-fix/bug-name
-docs/doc-name
-```
-
----
-
-## 8. Quy ước commit message
-
-```txt
-feat: add web collector module
-feat: add link extraction functionality
-fix: resolve empty link type error
-docs: update setup guide
-refactor: optimize sections parsing
-```
-
-Ý nghĩa:
-- `feat`: thêm chức năng mới
-- `fix`: sửa lỗi
-- `docs`: cập nhật tài liệu
-- `refactor`: chỉnh lại code nhưng không đổi behavior
-- `chore`: việc phụ như config, format, dependency
+* **Feature 8: Final Report Generator (Xuất báo cáo PDF)**
+  * *Mục tiêu:* Tạo báo cáo phân tích định dạng PDF hoàn chỉnh.
+  * *Giải pháp:* Sử dụng thư viện `reportlab` xây dựng tài liệu qua cấu trúc `SimpleDocTemplate`. Để ngăn chặn chữ bị tràn ra ngoài viền bảng (lỗi overflow), tất cả các văn bản hiển thị trong bảng đều được bóc tách và bọc trong đối tượng `Paragraph` có định dạng font size và khoảng đệm (padding) rõ ràng, giúp chữ tự động xuống dòng khi cột bị hẹp. Đồng thời sử dụng hàm callback `onLaterPages` để tự động vẽ số trang ở chân trang.
 
 ---
 
-## 9. File không được commit
+## 5. Đặc tả cấu trúc Dữ liệu đầu ra (Data Schemas)
 
-Các file và thư mục sau không được push lên GitHub:
+* **Bảng `sections.csv` (113 dòng):**
+  * `section_id`: Số thứ tự phân mục (khóa chính).
+  * `section_level`: Cấp độ tiêu đề (`h1`, `h2`, `h3`).
+  * `section_title`: Tên tiêu đề phân mục.
+  * `section_text`: Văn bản thô của phân mục.
+  * `word_count`: Số từ.
+  * `code_block_count`: Số đoạn code ví dụ.
+  * `link_count`: Số liên kết.
 
-```txt
-.venv/
-venv/
-__pycache__/
-.ipynb_checkpoints/
-data/raw/*.html
-data/processed/*.csv
-```
+* **Bảng `links.csv` (504 dòng):**
+  * `link_text`: Văn bản hiển thị của link.
+  * `href`: Đường dẫn liên kết.
+  * `link_type`: Phân loại liên kết (`internal_anchor`, `external_link`, `documentation_link`, `image_link`, `empty_or_invalid`).
+  * `section_title`: Tiêu đề phân mục chứa link này.
 
-Nên có file `.gitignore` ở root project:
-
-```gitignore
-# Virtual Environment
-.venv/
-venv/
-env/
-ENV/
-
-# Python cache files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Data files & generated outputs (Run scripts locally to generate them)
-data/raw/*.html
-data/processed/*.csv
-output/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-```
+* **Bảng `code_examples.csv` (220 dòng):**
+  * `example_id`: Số thứ tự ví dụ code.
+  * `section_title`: Tiêu đề phân mục chứa ví dụ code.
+  * `code_text`: Mã nguồn Python.
+  * `line_count`: Số dòng code.
+  * `contains_find_all` / `contains_find` / `contains_select` / `contains_get_text` / `contains_requests`: Trạng thái chứa từ khóa tương ứng (`1` là có, `0` là không).
 
 ---
 
-## 10. Lỗi thường gặp
+## 6. Quy trình làm việc trên Git (Git Workflow)
 
-### 10.1 Lỗi ModuleNotFoundError
+* **Quy ước đặt tên Branch:** Mỗi thành viên phát triển tính năng trên branch riêng, đặt tên trùng với mã tính năng:
+  * Thu thập dữ liệu: `feature1/web-page-collector`
+  * Phân tích cú pháp: `feature2/html-parser`
+  * Trích xuất phân mục: `feature3/section-extractor`
+  * Trích xuất liên kết: `feature4/link-extractor`
+  * Trích xuất mã ví dụ: `feature5/code-example-extractor`
+  * Phân tích dữ liệu: `feature6/documentation-analytics`
+  * Trực quan hóa: `feature7/data-visualization`
+  * Báo cáo cuối kỳ: `feature8/final-report-generator`
+  * Ứng dụng giao diện: `feature-advanced/local-analytics-app`
+  * Sửa lỗi: `fix/tên-lỗi`
 
-Lỗi do chưa active virtual environment hoặc chưa cài đủ thư viện.
-Khắc phục: chạy kích hoạt `.venv` trước rồi mới cài đặt thư viện:
+* **Quy ước viết Commit Messages:**
+  * `feat`: Thêm tính năng mới (ví dụ: `feat: add web collector module`).
+  * `fix`: Sửa lỗi phát sinh (ví dụ: `fix: resolve empty link type error`).
+  * `docs`: Cập nhật tài liệu hướng dẫn (ví dụ: `docs: update setup guide`).
+  * `refactor`: Tối ưu cấu trúc code (ví dụ: `refactor: optimize sections parsing`).
 
-```bash
-pip install -r requirements.txt
-```
-
-### 10.2 Lỗi FileNotFoundError khi chạy src/main.py
-
-Lỗi do terminal đang đứng sai thư mục (không phải thư mục root của dự án).
-Khắc phục: Sử dụng lệnh `cd` để chuyển terminal về đúng thư mục `PDS310m-Project-Group2` trước khi chạy code.
-
-### 10.3 Lỗi HTTP 403 / Timeout khi collect raw HTML
-
-Lỗi do trang web chặn request hoặc kết nối mạng không ổn định.
-Khắc phục: Kiểm tra kết nối internet hoặc thêm headers giả lập trình duyệt (User-Agent) trong file `src/collector.py`.
-
-### 10.4 Lỗi Jupyter Notebook không nhận kernel .venv
-
-Lỗi do Jupyter chưa nhận môi trường ảo mới.
-Khắc phục: Cài `ipykernel` trong `.venv`:
-
-```bash
-pip install ipykernel
-python -m ipykernel install --user --name=pds310m_env
-```
-Sau đó mở file `.ipynb` và chọn kernel `pds310m_env` để chạy.
-
----
-
-## 11. Ghi chú cho team
-
-- Luôn kích hoạt `.venv` trước khi phát triển hoặc chạy thử.
-- Không sửa trực tiếp trên branch `main`.
-- Không push thư mục `.venv`.
-- Không push dữ liệu raw/processed lên GitHub.
-- Mỗi task nên có một branch riêng.
-- Code xong tạo Pull Request để cả team review.
+* **Quy tắc bỏ qua tệp tin (`.gitignore`):**
+  * Không push các file HTML gốc, file CSV kết quả, file ảnh biểu đồ, file PDF báo cáo và môi trường ảo cá nhân lên kho chứa GitHub để tránh xung đột dữ liệu giữa các máy.
+  * Các đường dẫn bị chặn bao gồm: `.venv/`, `__pycache__/`, `data/raw/*.html`, `data/processed/*.csv`, `output/charts/*.png`, và `output/final_report.pdf`.
