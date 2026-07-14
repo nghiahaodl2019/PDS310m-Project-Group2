@@ -16,7 +16,10 @@ __pycache__/
 
 data/raw/*.html
 data/processed/*.csv
-output/
 
 *.log
 *.tmp
+
+data/raw/*.html
+data/processed/*.csv
+output/
