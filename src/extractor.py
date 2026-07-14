@@ -97,7 +97,7 @@ def extract_sections(soup: BeautifulSoup) -> pd.DataFrame:
     rows = []
 
     for idx, heading in enumerate(headings):
-        level = int(heading.name[1])
+        level = heading.name
         title = _heading_title(heading)
         next_heading = headings[idx + 1] if idx + 1 < len(headings) else None
 
