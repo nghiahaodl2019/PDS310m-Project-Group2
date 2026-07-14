@@ -3,6 +3,8 @@ from collector import collect_webpage
 from parser import run_parser
 from src.extractor import run_all_extractions
 from src.analyzer import run_all_analytics
+from src.visualizer import run_all_visualizations
+from src.report_generator import run_report_generator
 
 
 def main():
@@ -45,7 +47,25 @@ def main():
     print("\nPipeline executed successfully up to Feature 6.")
     print("Check 'output/analysis_results.json' and 'output/summary_tables.xlsx'.")
 
-    print("\n✅ Pipeline completed successfully!")
+    # Feature 7: Data Visualization
+    print("\n--- Running Feature 7: Data Visualization ---")
+    chart_results = run_all_visualizations(extraction_results)
+    if chart_results is None:
+        print("Feature 7: Data Visualization failed. Exiting pipeline.")
+        sys.exit(1)
+
+    print("\nPipeline executed successfully up to Feature 7.")
+    print("Check the 'output/charts/' directory for the generated chart images.")
+
+    # Feature 8: Final Report Generator
+    print("\n--- Running Feature 8: Final Report Generator ---")
+    report_path = run_report_generator(analysis_results)
+    if report_path is None:
+        print("Feature 8: Final Report Generator failed. Exiting pipeline.")
+        sys.exit(1)
+
+    print("\nPipeline executed successfully up to Feature 8.")
+    print(f"Final report generated at: {report_path}")
 
 if __name__ == "__main__":
     main()
