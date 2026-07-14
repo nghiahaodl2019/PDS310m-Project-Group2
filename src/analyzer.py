@@ -35,6 +35,17 @@ STOPWORDS = {
     "such", "up", "use", "used", "using", "want", "way",
 }
 
+# Keep the keyword question focused on BeautifulSoup/Python/HTML concepts
+# instead of URL fragments and common prose such as "com" or "example".
+TECHNICAL_KEYWORDS = {
+    "attribute", "attributes", "beautifulsoup", "boolean", "bytes", "class",
+    "css", "decode", "document", "element", "encoding", "find", "findall",
+    "formatter", "html", "html5lib", "href", "id", "keyword", "link", "lxml",
+    "markup", "method", "parser", "python", "request", "requests", "select",
+    "selector", "soup", "string", "tag", "text", "tree", "unicode", "url",
+    "xml",
+}
+
 
 # --------------------------------------------------------------------------
 # Helpers
@@ -53,9 +64,16 @@ def _load_from_csv() -> Dict[str, pd.DataFrame]:
 
 
 def _tokenize(text: str) -> List[str]:
-    """Tách từ đơn giản: chữ thường, chỉ giữ từ >= 3 ký tự, loại stopword."""
+    """Tokenize text and retain terms from the technical vocabulary."""
+    text = re.sub(r"https?://\S+|www\.\S+", " ", text.lower())
     words = re.findall(r"[a-zA-Z]+", text.lower())
-    return [w for w in words if len(w) >= 3 and w not in STOPWORDS]
+    return [
+        word
+        for word in words
+        if len(word) >= 3
+        and word not in STOPWORDS
+        and word in TECHNICAL_KEYWORDS
+    ]
 
 
 # --------------------------------------------------------------------------
