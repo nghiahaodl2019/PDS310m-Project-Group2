@@ -16,8 +16,7 @@ __pycache__/
 
 data/raw/*.html
 data/processed/*.csv
-output/charts/*.png
-output/final_report.pdf
+output/
 
 *.log
 *.tmp

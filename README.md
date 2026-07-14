@@ -1,6 +1,6 @@
 # BeautifulSoup Documentation Analytics System
 
-Dự án thu thập, phân tích dữ liệu và trực quan hóa tài liệu chính thức của BeautifulSoup nhằm phân tích cấu trúc tài liệu, liên kết và ví dụ mã nguồn Python.
+Dự án thu thập, phân tích dữ liệu tài liệu chính thức của BeautifulSoup nhằm phân tích cấu trúc tài liệu, liên kết và ví dụ mã nguồn Python.
 
 # WARNING: NHỚ KÍCH HOẠT VIRTUAL ENVIRONMENT (.venv) TRƯỚC KHI CHẠY CODE NHA AE !!!!!!!!!!!!!!!!!
 
@@ -26,7 +26,7 @@ git status
 
 ## 1. Công nghệ sử dụng
 
-- Python (BeautifulSoup4, Pandas, NumPy, Matplotlib, Requests)
+- Python (BeautifulSoup4, Pandas, NumPy, Requests)
 - Jupyter Notebook
 
 ### Công cụ cần cài
@@ -50,15 +50,15 @@ Trích xuất tất cả các siêu liên kết và phân loại chúng thành c
 ### 2.4 Code Example Extractor
 Trích xuất các đoạn code ví dụ Python trong tài liệu và kiểm tra sự xuất hiện của các từ khóa quan trọng (`find_all()`, `find()`, v.v.), lưu vào `data/processed/code_examples.csv`.
 
-### 2.5 Documentation Analytics & Visualization
-Sử dụng Pandas/NumPy để thực hiện 8+ câu hỏi phân tích dữ liệu và vẽ 4 biểu đồ lưu vào `output/charts/`.
+### 2.5 Documentation Analytics
+Sử dụng Pandas/NumPy để thực hiện 8+ câu hỏi phân tích dữ liệu, kết quả lưu vào `output/analysis_results.json` và `output/summary_tables.xlsx`.
 
 ---
 
 ## 3. Cấu trúc thư mục đề xuất
 
 ```txt
-PDS301m_Project_Group2/
+PDS310m-Project-Group2/
   data/
     raw/
       beautifulsoup_doc.html        # Raw HTML downloaded from the web
@@ -69,19 +69,14 @@ PDS301m_Project_Group2/
   notebooks/
     analysis.ipynb                  # Jupyter Notebook for exploratory analytics
   output/
-    charts/
-      word_count_by_section.png     # Bar chart: Top 10 sections by word count
-      code_examples_by_section.png  # Bar chart: Number of code examples by section
-      link_type_distribution.png    # Pie chart: Link type distribution
-      code_linecount_hist.png       # Histogram: Code example line count distribution
-    final_report.pdf                # Compiled PDF report
+    analysis_results.json           # JSON analytics results
+    summary_tables.xlsx             # Excel summary tables
   src/
     collector.py                    # Feature 1: Downloads HTML
     parser.py                       # Feature 2: Parses HTML using BeautifulSoup
     extractor.py                    # Features 3, 4, 5: Extracts CSV tables
     analyzer.py                     # Feature 6: Executes analytics
-    visualizer.py                   # Feature 7: Generates charts
-    main.py                         # Feature 8: Orchestrates the pipeline
+    main.py                         # Orchestrates the pipeline
   README.md
   requirements.txt
 ```
@@ -94,14 +89,14 @@ Lưu ý: nếu project thực tế đang đặt tên thư mục khác, thành vi
 
 ```bash
 git clone <repo-url>
-cd PDS301m_Project_Group2
+cd PDS310m-Project-Group2
 ```
 
 Ví dụ:
 
 ```bash
-git clone https://github.com/<owner>/PDS301m_Project_Group2.git
-cd PDS301m_Project_Group2
+git clone https://github.com/<owner>/PDS310m-Project-Group2.git
+cd PDS310m-Project-Group2
 ```
 
 ---
@@ -114,7 +109,7 @@ Link: https://www.python.org/downloads/
 Đi vào thư mục root của dự án:
 
 ```bash
-cd PDS301m_Project_Group2
+cd PDS310m-Project-Group2
 ```
 
 Tạo và kích hoạt Virtual Environment:
@@ -190,9 +185,6 @@ feature3/section-extractor
 feature4/link-extractor
 feature5/code-example-extractor
 feature6/documentation-analytics
-feature7/data-visualization
-feature8/final-report-generator
-feature-advanced/local-analytics-app
 fix/bug-name
 docs/doc-name
 ```
@@ -229,7 +221,6 @@ __pycache__/
 .ipynb_checkpoints/
 data/raw/*.html
 data/processed/*.csv
-output/charts/*.png
 ```
 
 Nên có file `.gitignore` ở root project:
@@ -252,8 +243,7 @@ __pycache__/
 # Data files & generated outputs (Run scripts locally to generate them)
 data/raw/*.html
 data/processed/*.csv
-output/charts/*.png
-output/final_report.pdf
+output/
 
 # OS files
 .DS_Store
@@ -280,7 +270,7 @@ pip install -r requirements.txt
 ### 10.2 Lỗi FileNotFoundError khi chạy src/main.py
 
 Lỗi do terminal đang đứng sai thư mục (không phải thư mục root của dự án).
-Khắc phục: Sử dụng lệnh `cd` để chuyển terminal về đúng thư mục `PDS301m_Project_Group2` trước khi chạy code.
+Khắc phục: Sử dụng lệnh `cd` để chuyển terminal về đúng thư mục `PDS310m-Project-Group2` trước khi chạy code.
 
 ### 10.3 Lỗi HTTP 403 / Timeout khi collect raw HTML
 
@@ -294,9 +284,9 @@ Khắc phục: Cài `ipykernel` trong `.venv`:
 
 ```bash
 pip install ipykernel
-python -m ipykernel install --user --name=pds301m_env
+python -m ipykernel install --user --name=pds310m_env
 ```
-Sau đó mở file `.ipynb` và chọn kernel `pds301m_env` để chạy.
+Sau đó mở file `.ipynb` và chọn kernel `pds310m_env` để chạy.
 
 ---
 
@@ -305,6 +295,6 @@ Sau đó mở file `.ipynb` và chọn kernel `pds301m_env` để chạy.
 - Luôn kích hoạt `.venv` trước khi phát triển hoặc chạy thử.
 - Không sửa trực tiếp trên branch `main`.
 - Không push thư mục `.venv`.
-- Không push dữ liệu raw/processed và biểu đồ lên GitHub.
+- Không push dữ liệu raw/processed lên GitHub.
 - Mỗi task nên có một branch riêng.
 - Code xong tạo Pull Request để cả team review.
