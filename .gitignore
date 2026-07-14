@@ -19,3 +19,7 @@ data/processed/*.csv
 
 *.log
 *.tmp
+
+data/raw/*.html
+data/processed/*.csv
+output/
