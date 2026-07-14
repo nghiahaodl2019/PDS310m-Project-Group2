@@ -1,10 +1,10 @@
 import sys
 from collector import collect_webpage
 from parser import run_parser
-from src.extractor import run_all_extractions
-from src.analyzer import run_all_analytics
-from src.visualizer import run_all_visualizations
-from src.report_generator import run_report_generator
+from extractor import run_all_extractions
+from analyzer import run_all_analytics
+from visualizer import run_all_visualizations
+from report_generator import run_report_generator
 
 
 def main():
